@@ -1,25 +1,69 @@
-/*
-Theme Name: nathalie-mota
-Theme URI: https://github.com/Timzilac/nathalie-mota
-Author: Timothe
-Author URI: https://github.com/Timzilac
-Description: Theme formation etape 10.
-Version: 1.0
-License: GNU General Public License v2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: nathalie-mota
-*/
-
 body {
-    width: 1440px;
+  width: 1440px;
+  margin: auto;
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 140px;
+}
+header ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 40px;
+}
+header ul a {
+  font-family: Space Mono;
+  font-size: 16px;
+  line-height: 23.7px;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 .banner {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.banner .image-banner {
+  position: relative;
+}
+.banner .titre-banner {
+  position: absolute;
+  font-family: Space Mono;
+  font-size: 96px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 142px;
+  -webkit-text-stroke: 2px white;
+  color: transparent;
+}
+
+footer {
+  border-top: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+footer ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 80px;
+}
+footer ul a {
+  font-family: Space Mono;
+  font-size: 16px;
+  line-height: 23.7px;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+}/*# sourceMappingURL=style.css.map */

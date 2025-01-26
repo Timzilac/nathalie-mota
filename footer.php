@@ -1,6 +1,7 @@
-<footer class="footer">
-    <div class="container mx-auto text-center">
-        <p>© 2025 Votre Site. Tous droits réservés.</p>
-        <button id="openModal" class="text-blue-400 hover:text-blue-300">Contactez-nous</button>
-    </div>
+<footer>
+    <ul>
+        <li><a href="mentions-legales.html">Mentions Légales</a></li>
+        <li><a href="vie-privee.html">Vie Privée</a></li>
+        <li><a href="tous-droits-reserves.html">Tous Droits Réservés</a></li>
+    </ul>
 </footer>
