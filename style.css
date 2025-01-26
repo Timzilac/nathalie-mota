@@ -9,3 +9,17 @@ License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: nathalie-mota
 */
+
+body {
+    width: 1440px;
+}
+
+header {
+}
+
+.banner {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
