@@ -13,8 +13,8 @@
     <header>
         <img src="<?php echo get_template_directory_uri(); ?>/images/logo.png" alt="Logo de Nathalie Mota" height="14" width="216"/></img>
             <ul>
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">à propos</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="http://nathalie-mota.local/">Accueil</a></li>
+                <li><a href="http://nathalie-mota.local/a-propos/">à propos</a></li>
+                <li><a id="contactLink">Contact</a></li>
             </ul>
     </header>
