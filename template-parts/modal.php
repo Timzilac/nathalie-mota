@@ -1,13 +1,9 @@
-<!-- Trigger/Open The Modal -->
-<button id="myBtn">Open Modal</button>
+<button id="myBtn">Nous contacter</button>
 
-<!-- The Modal -->
 <div id="myModal" class="modal">
-
-  <!-- Modal content -->
   <div class="modal-content">
-    <span class="close">x</span>
-    <p>Some text in the Modal..</p>
+    <span class="close"></span>
+    <img src="<?php echo get_template_directory_uri(); ?>/images/contact-header.png" alt="contact-header" class="contact-header">
+    <?php echo do_shortcode('[contact-form-7 id="a249bac" title="Untitled"]'); ?>
   </div>
-
 </div>
