@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 // Get the modal
 var modal = document.getElementById('myModal');
 
@@ -11,22 +12,18 @@ var contactLink = document.getElementById("contactLink");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button or the link, open the modal
-btn.onclick = function() {
+btn.addEventListener("click", () => {
     modal.style.display = "block";
-}
-contactLink.onclick = function(event) {
+});
+contactLink.addEventListener("click", (event) => {
     event.preventDefault(); // Prevent default link behavior
     modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
+});
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.addEventListener("click", (event) => {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
+});
+});
