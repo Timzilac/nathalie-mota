@@ -15,6 +15,6 @@
             <ul>
                 <li><a href="http://nathalie-mota.local/">Accueil</a></li>
                 <li><a href="http://nathalie-mota.local/a-propos/">à propos</a></li>
-                <li><a id="contactLink">Contact</a></li>
+                <li><a id="contactLink" href="#">Contact</a></li>
             </ul>
     </header>

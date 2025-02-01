@@ -9,7 +9,6 @@ header {
   align-items: center;
   padding: 20px 140px;
 }
-
 header ul {
   display: flex;
   margin: 0;
@@ -17,7 +16,6 @@ header ul {
   list-style: none;
   gap: 40px;
 }
-
 header ul a {
   font-family: Space Mono;
   font-size: 16px;
@@ -53,7 +51,6 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 10px 0;
-  margin-top: 10px;
   gap: 100px;
 }
 footer button {
@@ -96,22 +93,24 @@ footer ul a {
   margin: 15% auto;
   width: 597px;
   overflow: hidden;
-  padding-top: 15px;
+  padding-block: 18px 28px;
 }
 .modal .modal-content .wpcf7 {
   display: flex;
   justify-content: center;
 }
 .modal .modal-content .envoyer {
-  width: 100%;
+  width: 263px;
   height: 50px;
+  border: none;
+  background-color: #D8D8D8;
 }
 .modal .modal-content form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  margin-top: 10px;
+  gap: 18px;
+  margin-top: 25px;
   padding-inline: 130px;
 }
 .modal .modal-content form p {
@@ -119,6 +118,7 @@ footer ul a {
   width: 100%;
 }
 .modal .modal-content form label {
+  max-width: 255px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -130,8 +130,88 @@ footer ul a {
 }
 .modal .modal-content form label textarea {
   padding: 8px;
-  height: 210px;
+  height: 192px;
+  max-width: 245px;
 }
 .modal .modal-content form label input {
   height: 40px;
-}/*# sourceMappingURL=style.css.map */
+  max-width: 100%;
+}
+
+.main-gallery {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-inline: 140px;
+  margin-block: 80px;
+  gap: 40px;
+}
+.main-gallery .gallery-filters {
+  display: flex;
+  justify-content: space-between;
+}
+.main-gallery .gallery-filters select {
+  text-transform: uppercase;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: 1.3px solid #B8BBC2;
+  display: flex;
+  width: 260px;
+  justify-content: space-between;
+}
+.main-gallery .gallery-filters .category-format-filters {
+  display: flex;
+  gap: 34px;
+}
+.main-gallery .gallery-filters .category-format-filters select {
+  text-transform: uppercase;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: 1.3px solid #B8BBC2;
+  display: flex;
+  width: 260px;
+  justify-content: space-between;
+}
+.main-gallery button {
+  display: flex;
+  width: -moz-fit-content;
+  width: fit-content;
+  align-self: center;
+  border-radius: 2px;
+  border: none;
+  background-color: #D8D8D8;
+  padding: 18px 98px;
+  font-family: Space Mono;
+  font-size: 12px;
+  line-height: 18px;
+}
+.main-gallery button:hover {
+  background-color: #000000;
+  color: white;
+  font-weight: 700;
+}
+.main-gallery .gallery-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+.main-gallery .gallery-content .photo-thumbnail {
+  display: flex;
+}
+.main-gallery .gallery-content .photo-thumbnail img {
+  aspect-ratio: 1/1;
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
+}/*# sourceMappingURL=theme.css.map */
