@@ -8,6 +8,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 140px;
+    box-shadow: 0px 4px 14px 0px #00000008;
         ul {
         display: flex;
         margin: 0;
@@ -45,37 +46,6 @@ header {
         }
 }
 
-footer {
-    border-top: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-    gap: 100px;
-        button {
-        font-family: Poppins;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 18px;
-        padding: 5px 10px;
-        text-transform: uppercase;
-        }
-        ul {
-        display: flex;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        gap: 80px; 
-            a {
-            font-family: Space Mono;
-            font-size: 16px;
-            line-height: 23.7px;
-            color: black;      
-            text-decoration: none;
-            text-transform: uppercase;
-            }
-        }
-}
 
 .modal {
     display: none;
@@ -202,8 +172,78 @@ footer {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 32px;
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
         .photo-thumbnail {
+            position: relative;
             display: flex;
+            .photo-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #00000099;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                text-align: center;
+                cursor: pointer;
+                .photo-icons {
+                    display: flex;
+                    flex-direction: column;
+                    margin-block: 12px 18px;
+                    width: 100%;
+                    height: 100%;
+                    justify-content: space-between;
+                    .fullscreen-icon {
+                    background: black;
+                    margin-right: 18px;
+                    border-radius: 50%;
+                    padding: 10px;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-self: self-end;
+                        img {
+                            width: 14px;
+                            height: 14px;
+                            object-fit: contain;
+                        }
+                    }
+                    .eye-icon {
+                        img {
+                            width: 46px;
+                            height: 31px;
+                            object-fit: contain;
+                        }
+                    }
+                    .category-title {
+                        display: flex;
+                        justify-content: space-between;
+                        padding-inline: 18px 24px;
+                        .photo-category {
+                            font-family: Space Mono;
+                            font-size: 14px;
+                            line-height: 20.73px;
+                            letter-spacing: 0.1em;
+                            text-transform: uppercase;
+                            color: white;
+                        }
+                        .photo-title {
+                            font-family: Poppins;
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 21px;   
+                            color: white;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+            }
             img {
                 aspect-ratio: 1 / 1;
                 object-fit: cover;
@@ -213,3 +253,121 @@ footer {
         }
     }
 }    
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+}
+
+footer {
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 100px;
+        button {
+        font-family: Poppins;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 18px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+        }
+        ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        gap: 80px; 
+            .all-right-reserved {
+            font-family: Space Mono;
+            font-size: 16px;
+            line-height: 23.7px;
+            color: black;
+            text-transform: uppercase;
+            }
+            a {
+            font-family: Space Mono;
+            font-size: 16px;
+            line-height: 23.7px;
+            color: black;      
+            text-decoration: none;
+            text-transform: uppercase;
+            }
+        }
+}
+
+.main-single {
+    padding: 30px 140px;
+    height: 100vh;
+    .post {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .post-left {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        justify-content: flex-end;
+        .post-title {
+        font-family: Space Mono;
+        font-size: 66px;
+        font-style: italic;
+        line-height: 58px;
+        text-transform: uppercase;
+        width: 50%;
+        margin: 0;
+        }
+        .post-info {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            div {
+            font-family: Space Mono;
+            font-size: 14px;
+            line-height: 20.73px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            }
+        }
+        .separator {
+            margin: 0;
+            height: 1px;
+            background-color: black;
+            border: none;
+            margin: 12px 16px 0 0;
+        }
+    }
+    .post-right {
+        display: flex;
+        width: 50%;
+        .post-image {
+            img {
+                object-fit: contain;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

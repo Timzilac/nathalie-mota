@@ -12,9 +12,26 @@
     <body>
     <header>
         <img src="<?php echo get_template_directory_uri(); ?>/images/logo.png" alt="Logo de Nathalie Mota" height="14" width="216"/></img>
-            <ul>
-                <li><a href="http://nathalie-mota.local/">Accueil</a></li>
-                <li><a href="http://nathalie-mota.local/a-propos/">à propos</a></li>
-                <li><a id="contactLink" href="#">Contact</a></li>
-            </ul>
+        <?php
+$menu_name = 'main-menu'; // Nom du menu
+$menu = wp_get_nav_menu_object($menu_name); // Récupère l'objet du menu
+
+if ($menu) {
+    $menu_items = wp_get_nav_menu_items($menu->term_id); // Récupère les éléments du menu
+
+    if (!empty($menu_items)) {
+        echo '<nav class="main-nav"><ul class="main-menu">';
+        foreach ($menu_items as $item) {
+            echo '<li><a href="' . esc_url($item->url) . '">' . esc_html($item->title) . '</a></li>';
+        }
+        // Ajout du lien "Contact" à la fin
+        echo '<li><a id="contactLink" href="#">Contact</a></li>';
+        echo '</ul></nav>';
+    } else {
+        echo '<p>Le menu "main-menu" est vide.</p>';
+    }
+} else {
+    echo '<p>Le menu "main-menu" n\'existe pas.</p>';
+}
+?>          
     </header>

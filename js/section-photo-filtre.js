@@ -49,49 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         photosContainer.innerHTML = "";
         displayedPhotos.forEach(photo => photosContainer.appendChild(photo));
-        updatePhotoDisplay(8);
-
-        // Masquer l'option sélectionnée dans le filtre de catégorie
-        Array.from(categoryFilter.options).forEach(option => {
-            if (option.value === category && category !== "") {
-                option.style.display = "none"; // Cacher l'option sélectionnée
-            } else {
-                option.style.display = ""; // Réafficher les autres options
-            }
-        });
-
-        // Masquer l'option sélectionnée dans le filtre de format
-        Array.from(formatFilter.options).forEach(option => {
-            if (option.value === format && format !== "") {
-                option.style.display = "none";
-            } else {
-                option.style.display = "";
-            }
-        });
-
-        // Ajout d'un espace blanc au début de la liste de filtres
-        if (!categoryFilter.querySelector("option[value='']")) {
-            const emptyOption = document.createElement("option");
-            emptyOption.value = "";
-            emptyOption.textContent = ""; // Texte vide pour créer l'espace
-            categoryFilter.prepend(emptyOption); // Ajouter en haut de la liste
-        }
-        if (!formatFilter.querySelector("option[value='']")) {
-            const emptyOption = document.createElement("option");
-            emptyOption.value = "";
-            emptyOption.textContent = ""; // Texte vide pour créer l'espace
-            formatFilter.prepend(emptyOption); // Ajouter en haut de la liste
-        }
+        sortPhotos(); // Appliquer le tri après le filtrage
     }
 
     function sortPhotos() {
-        const sortValue = sortBy.value;
+        let sortValue = sortBy.value;
+
+        // Si aucun tri n'est sélectionné, appliquer "date_desc" par défaut
+        if (!sortValue) {
+            sortValue = "date_desc";
+        }
+
         displayedPhotos.sort((a, b) => {
-            if (sortValue === "title_asc") {
-                return a.dataset.title.localeCompare(b.dataset.title);
-            } else if (sortValue === "title_desc") {
-                return b.dataset.title.localeCompare(a.dataset.title);
-            } else if (sortValue === "date_asc") {
+            if (sortValue === "date_asc") {
                 return new Date(a.dataset.date) - new Date(b.dataset.date);
             } else if (sortValue === "date_desc") {
                 return new Date(b.dataset.date) - new Date(a.dataset.date);
@@ -108,5 +78,5 @@ document.addEventListener("DOMContentLoaded", function () {
     formatFilter.addEventListener("change", filterPhotos);
     sortBy.addEventListener("change", sortPhotos);
 
-    updatePhotoDisplay(8);
+    filterPhotos(); // Filtrer et trier les photos dès le chargement
 });

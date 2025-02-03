@@ -8,6 +8,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px 140px;
+  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.031372549);
 }
 header ul {
   display: flex;
@@ -43,38 +44,6 @@ header ul a {
   line-height: 142px;
   -webkit-text-stroke: 2px white;
   color: transparent;
-}
-
-footer {
-  border-top: 1px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  gap: 100px;
-}
-footer button {
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
-  padding: 5px 10px;
-  text-transform: uppercase;
-}
-footer ul {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  gap: 80px;
-}
-footer ul a {
-  font-family: Space Mono;
-  font-size: 16px;
-  line-height: 23.7px;
-  color: black;
-  text-decoration: none;
-  text-transform: uppercase;
 }
 
 .modal {
@@ -205,13 +174,201 @@ footer ul a {
   grid-template-columns: repeat(2, 1fr);
   gap: 32px;
 }
+.main-gallery .gallery-content .photo-item:hover .photo-overlay {
+  opacity: 1;
+}
 .main-gallery .gallery-content .photo-thumbnail {
+  position: relative;
   display: flex;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons {
+  display: flex;
+  flex-direction: column;
+  margin-block: 12px 18px;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .fullscreen-icon {
+  background: black;
+  margin-right: 18px;
+  border-radius: 50%;
+  padding: 10px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-self: self-end;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .fullscreen-icon img {
+  width: 14px;
+  height: 14px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .eye-icon img {
+  width: 46px;
+  height: 31px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .category-title {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 18px 24px;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .category-title .photo-category {
+  font-family: Space Mono;
+  font-size: 14px;
+  line-height: 20.73px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: white;
+}
+.main-gallery .gallery-content .photo-thumbnail .photo-overlay .photo-icons .category-title .photo-title {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: white;
+  text-transform: uppercase;
 }
 .main-gallery .gallery-content .photo-thumbnail img {
   aspect-ratio: 1/1;
   -o-object-fit: cover;
      object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+footer {
+  border-top: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  gap: 100px;
+}
+footer button {
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+footer ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 80px;
+}
+footer ul .all-right-reserved {
+  font-family: Space Mono;
+  font-size: 16px;
+  line-height: 23.7px;
+  color: black;
+  text-transform: uppercase;
+}
+footer ul a {
+  font-family: Space Mono;
+  font-size: 16px;
+  line-height: 23.7px;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.main-single {
+  padding: 30px 140px;
+  height: 100vh;
+}
+.main-single .post {
+  display: flex;
+  flex-wrap: wrap;
+}
+.main-single .post-left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  justify-content: flex-end;
+}
+.main-single .post-left .post-title {
+  font-family: Space Mono;
+  font-size: 66px;
+  font-style: italic;
+  line-height: 58px;
+  text-transform: uppercase;
+  width: 50%;
+  margin: 0;
+}
+.main-single .post-left .post-info {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.main-single .post-left .post-info div {
+  font-family: Space Mono;
+  font-size: 14px;
+  line-height: 20.73px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.main-single .post-left .separator {
+  margin: 0;
+  height: 1px;
+  background-color: black;
+  border: none;
+  margin: 12px 16px 0 0;
+}
+.main-single .post-right {
+  display: flex;
+  width: 50%;
+}
+.main-single .post-right .post-image img {
+  -o-object-fit: contain;
+     object-fit: contain;
   width: 100%;
   height: 100%;
 }/*# sourceMappingURL=theme.css.map */
