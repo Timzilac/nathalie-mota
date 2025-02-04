@@ -54,7 +54,7 @@
         <div class="photo-overlay">
             <div class="photo-icons">
             <span class="fullscreen-icon">
-            <img src="<?php echo get_template_directory_uri(); ?>./images\fullscreen.png" alt="Fullscreen" width="16" height="14">
+            <img src="<?php echo get_template_directory_uri(); ?>./images/fullscreen.png" alt="Fullscreen" width="16" height="14">
             </span>
             <span class="eye-icon">
             <img src="<?php echo get_template_directory_uri(); ?>./images/icon-eye.png" alt="Eye" width="46" height="32">
