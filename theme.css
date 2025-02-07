@@ -1,5 +1,5 @@
 body {
-  width: 1440px;
+  max-width: 1440px;
   margin: auto;
 }
 
@@ -25,6 +25,9 @@ header ul a {
   text-decoration: none;
   text-transform: uppercase;
   cursor: pointer;
+}
+header ul a:hover {
+  font-weight: 700;
 }
 
 .banner {
@@ -265,19 +268,103 @@ header ul a {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease-in-out;
 }
 .lightbox.active {
   opacity: 1;
   visibility: visible;
 }
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  -o-object-fit: contain;
-     object-fit: contain;
+.lightbox .lightbox-content {
+  position: relative;
+  text-align: center;
+}
+.lightbox .lightbox-content .lightbox-img {
+  max-height: 90vh;
+  display: block;
+  margin: 0 auto;
+}
+.lightbox .lightbox-content .category-reference {
+  display: flex;
+  margin-top: 10px;
+  font-size: 18px;
+  text-align: center;
+  justify-content: space-between;
+}
+.lightbox .lightbox-content .category-reference .photo-reference {
+  font-weight: bold;
+  display: block;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-transform: uppercase;
+  color: white;
+}
+.lightbox .lightbox-content .category-reference .photo-category {
+  font-family: Space Mono;
+  font-size: 14px;
+  line-height: 20.73px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.lightbox-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-family: Space Mono;
+  font-size: 12px;
+  line-height: 17.77px;
+  color: white;
+  align-items: flex-end;
+  gap: 10px;
+  left: 20px;
+}
+.lightbox-prev:hover {
+  font-weight: 700;
+}
+.lightbox-prev:hover span {
+  font-size: 34px;
+  margin-bottom: 3px;
+}
+.lightbox-prev span {
+  font-size: 25px;
+  margin-bottom: 3px;
+}
+
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-family: Space Mono;
+  font-size: 12px;
+  line-height: 17.77px;
+  color: white;
+  align-items: flex-end;
+  gap: 10px;
+  right: 20px;
+}
+.lightbox-next:hover {
+  font-weight: 700;
+}
+.lightbox-next:hover span {
+  font-size: 34px;
+}
+.lightbox-next span {
+  font-size: 25px;
+  margin-bottom: 2px;
 }
 
 footer {
@@ -376,6 +463,23 @@ footer ul a {
   align-items: flex-end;
   gap: 30px;
 }
+.main-single .full-contact .right-contact .nav-thumbnail-preview {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 81px;
+  height: 71px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, visibility 0s 0.2s;
+  z-index: 10;
+}
+.main-single .full-contact .right-contact .nav-thumbnail-preview img {
+  width: 81px;
+  height: 71px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .main-single .full-contact .right-contact a {
   font-size: 25px;
   text-decoration: none;
@@ -442,7 +546,7 @@ footer ul a {
   padding: 80px 140px 110px 140px;
 }
 .related-photo h2 {
-  font-family: Space Mono;
+  font-family: "Space Mono";
   font-size: 18px;
   line-height: 26.66px;
   letter-spacing: 0.1em;
@@ -455,8 +559,14 @@ footer ul a {
   gap: 32px;
 }
 .related-photo .related-photo-container .photo-item {
+  position: relative;
   display: flex;
   flex: 1;
+  overflow: hidden;
+}
+.related-photo .related-photo-container .photo-item a {
+  display: block;
+  position: relative;
 }
 .related-photo .related-photo-container .photo-item a img {
   aspect-ratio: 1/1;
@@ -464,14 +574,73 @@ footer ul a {
      object-fit: cover;
   width: 100%;
   height: 100%;
+  transition: transform 0.3s ease;
 }
-
-.nav-thumbnail-preview {
+.related-photo .related-photo-container .photo-item a .overlay {
   position: absolute;
-  width: 81px;
-  height: 71px;
-  visibility: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out, visibility 0s 0.2s;
-  z-index: 10;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons {
+  display: flex;
+  flex-direction: column;
+  margin-block: 12px 18px;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .fullscreen-icon {
+  background: black;
+  margin-right: 18px;
+  border-radius: 50%;
+  padding: 10px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-self: self-end;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .fullscreen-icon img {
+  width: 14px;
+  height: 14px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .eye-icon img {
+  width: 46px;
+  height: 31px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .category-title {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 18px 24px;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .category-title .photo-category {
+  font-family: Space Mono;
+  font-size: 14px;
+  line-height: 20.73px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: white;
+}
+.related-photo .related-photo-container .photo-item a .overlay .photo-icons .category-title .photo-title {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: white;
+  text-transform: uppercase;
+}
+.related-photo .related-photo-container .photo-item:hover a .overlay {
+  opacity: 1;
 }/*# sourceMappingURL=theme.css.map */

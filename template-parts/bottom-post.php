@@ -36,6 +36,22 @@
                             <?php if (has_post_thumbnail()): ?>
                                 <?php the_post_thumbnail('high'); ?>
                             <?php endif; ?>
+                            <div class="overlay">
+                                <div class="photo-icons">
+                                    <span class="fullscreen-icon">
+                                        <img src="<?php echo get_template_directory_uri(); ?>./images/fullscreen.png"
+                                            alt="Fullscreen" width="16" height="14">
+                                    </span>
+                                    <span class="eye-icon">
+                                        <img src="<?php echo get_template_directory_uri(); ?>./images/icon-eye.png" alt="Eye"
+                                            width="46" height="32">
+                                    </span>
+                                    <div class="category-title">
+                                        <span class="photo-title"><?php echo esc_html(get_the_title()); ?></span>
+                                        <span class="photo-category"><?php echo esc_html($terms[0]->name ?? ''); ?></span>
+                                    </div>
+                                </div>
+                            </div>
                         </a>
                     </div>
                     <?php

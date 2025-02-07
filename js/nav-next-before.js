@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const container = document.querySelector(".right-contact");
     const preview = document.createElement("div");
     preview.classList.add("nav-thumbnail-preview");
-    document.body.appendChild(preview);
+    container.appendChild(preview);
 
     let hoverTimeout;
 
@@ -11,14 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const thumbnailUrl = this.getAttribute("data-thumbnail");
 
             if (thumbnailUrl) {
-                preview.innerHTML = `<img src="${thumbnailUrl}" alt="Preview" style="max-width: 100%; height: auto;">`;
+                preview.innerHTML = `<img src="${thumbnailUrl}" alt="Preview">`;
                 preview.style.visibility = "visible";
                 preview.style.opacity = "1";
 
                 // Définir une position fixe
-                preview.style.right = "50px";
-                preview.style.top = "925px";
-            }
+                preview.style.right = "0";
+                preview.style.top = "10px";
+            }   
         });
 
         link.addEventListener("mouseout", function () {
