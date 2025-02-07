@@ -166,6 +166,7 @@ header ul a:hover {
   font-family: Space Mono;
   font-size: 12px;
   line-height: 18px;
+  cursor: pointer;
 }
 .main-gallery button:hover {
   background-color: #000000;
