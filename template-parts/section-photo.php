@@ -1,80 +1,73 @@
 <Section class="main-gallery">
     <div class="gallery-filters">
         <div class="category-format-filters">
-            <select id="filter-category">
-                <option value="">catégories</option>
-                <?php
-                $categories = get_terms(['taxonomy' => 'categorie', 'hide_empty' => true]);
-                foreach ($categories as $category) {
-                    echo "<option value='{$category->slug}'>{$category->name}</option>";
-                }
-                ?>
-            </select>
-            
-            <select id="filter-format">
-                <option value="">formats</option>
-                <?php
-                $formats = get_terms(['taxonomy' => 'format', 'hide_empty' => true]);
-                foreach ($formats as $format) {
-                    echo "<option value='{$format->slug}'>{$format->name}</option>";
-                }
-                ?>
-            </select>
-        </div>
-        <select id="sort-by">
-            <option value="">Trier par</option>
-            <option value="date_desc">Date (Récent-Ancien)</option>
-            <option value="date_asc">Date (Ancien-Récent)</option>
-        </select>
-    </div>
-    
-    <div class="gallery-content">
-        <?php
-        $args = [
-            'post_type'      => 'photo',
-            'posts_per_page' => -1,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-        ];
-        $photos = new WP_Query($args);
-        
-        if ($photos->have_posts()) :
-            while ($photos->have_posts()) : $photos->the_post();
-                $categories = get_the_terms(get_the_ID(), 'categorie');
-                $formats = get_the_terms(get_the_ID(), 'format');
-                $date = get_the_date('Y-m-d');
-                ?>
-                <div class="photo-item" 
-                    data-category="<?php echo esc_attr(join(' ', wp_list_pluck($categories, 'slug'))); ?>" 
-                    data-format="<?php echo esc_attr(join(' ', wp_list_pluck($formats, 'slug'))); ?>"
-                    data-date="<?php echo esc_attr($date); ?>" 
-                    data-title="<?php echo esc_attr(get_the_title()); ?>"
-                    data-reference="<?php echo esc_attr(get_field('reference')); ?>"> 
-                    <div class="photo-thumbnail">
-                        <?php the_post_thumbnail('high'); ?>
-                        <div class="photo-overlay">
-                            <div class="photo-icons">
-                                <span class="fullscreen-icon">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/images/fullscreen.png" alt="Fullscreen" width="16" height="14">
-                                </span>
-                                <span class="eye-icon">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/images/icon-eye.png" alt="Eye" width="46" height="32">
-                                </span>
-                                <div class="category-title">
-                                    <span class="photo-title"><?php echo esc_html(get_the_title()); ?></span>
-                                    <span class="photo-category"><?php echo esc_html($categories[0]->name ?? ''); ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="filter-container">
+                <button id="filter-category-button"
+                    data-arrow-image="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png">
+                    Catégories <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png"
+                        alt="arrow" height="7" width="12">
+                </button>
+                <div id="filter-category-options" class="dropdown-content">
+                    <label>
+                        <input type="radio" name="filter-category" value="" checked> Catégories
+                    </label>
+                    <?php
+                    $categories = get_terms(['taxonomy' => 'categorie', 'hide_empty' => true]);
+                    foreach ($categories as $category) {
+                        echo "<label>
+                        <input type='radio' name='filter-category' value='{$category->slug}'> {$category->name}
+                      </label>";
+                    }
+                    ?>
                 </div>
-                <?php
-            endwhile;
-            wp_reset_postdata();
-        else :
-            echo '<p>Aucune photo trouvée.</p>';
-        endif;
-        ?>
+            </div>
+            <div class="filter-container">
+                <button id="filter-format-button"
+                    data-arrow-image="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png">
+                    Formats <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow"
+                        height="7" width="12">
+                </button>
+                <div id="filter-format-options" class="dropdown-content">
+                    <label>
+                        <input type="radio" name="filter-format" value="" checked> Formats
+                    </label>
+                    <?php
+                    $formats = get_terms(['taxonomy' => 'format', 'hide_empty' => true]);
+                    foreach ($formats as $format) {
+                        echo "<label>
+                        <input type='radio' name='filter-format' value='{$format->slug}'> {$format->name}
+                      </label>";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="filter-container">
+            <button id="sort-by-button"
+                data-arrow-image="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png">
+                Trier par <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow"
+                    height="7" width="12">
+            </button>
+            <div id="sort-by-options" class="dropdown-content">
+                <label>
+                    <input type="radio" name="sort-by" value="default" checked> Trier par
+                </label>
+                <label>
+                    <input type="radio" name="sort-by" value="recent-to-old"> Date récente
+                </label>
+                <label>
+                    <input type="radio" name="sort-by" value="old-to-recent"> Date ancienne
+                </label>
+            </div>
+        </div>
     </div>
-    
+
+    <div id="photo-gallery">
+    <div id="photo-container" class="gallery-content">
+    <!-- Les photos seront chargées ici par Ajax -->
+</div>
+
+<button id="load-more-btn">Charger plus</button>
+
+</div>
 </Section>

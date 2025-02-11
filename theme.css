@@ -122,56 +122,67 @@ header ul a:hover {
   display: flex;
   justify-content: space-between;
 }
-.main-gallery .gallery-filters select {
+.main-gallery .gallery-filters .filter-container {
+  position: relative;
+  display: inline-block;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-open {
+  border-radius: 8px 8px 0 0;
+  border: 1.3px solid #215AFF;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-open img {
+  transform: rotate(180deg);
+}
+.main-gallery .gallery-filters .filter-container button {
   text-transform: uppercase;
   font-family: Poppins;
-  font-size: 12px;
   font-weight: 500;
+  font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.03em;
-  padding: 11px 18px;
+  letter-spacing: 3px;
+  width: 260px;
+  height: 42px;
+  justify-content: space-between;
   border-radius: 8px;
   border: 1.3px solid #B8BBC2;
+  padding: 11px 18px;
   display: flex;
-  width: 260px;
-  justify-content: space-between;
+  cursor: pointer;
+  align-items: center;
+  background-color: white;
+}
+.main-gallery .gallery-filters .filter-container button:hover {
+  border: 1.3px solid #215AFF;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  z-index: 1;
+  width: 100%;
+  border-radius: 0 0 8px 8px;
+  padding-top: 50px;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-content label {
+  display: block;
+  cursor: pointer;
+  padding: 12px 18px;
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 3px;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-content label:hover {
+  background-color: #E00000;
+  color: white;
+}
+.main-gallery .gallery-filters .filter-container .dropdown-content label input[type=radio] {
+  display: none;
 }
 .main-gallery .gallery-filters .category-format-filters {
   display: flex;
   gap: 34px;
-}
-.main-gallery .gallery-filters .category-format-filters select {
-  text-transform: uppercase;
-  font-family: Poppins;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0.03em;
-  padding: 11px 18px;
-  border-radius: 8px;
-  border: 1.3px solid #B8BBC2;
-  display: flex;
-  width: 260px;
-  justify-content: space-between;
-}
-.main-gallery button {
-  display: flex;
-  width: -moz-fit-content;
-  width: fit-content;
-  align-self: center;
-  border-radius: 2px;
-  border: none;
-  background-color: #D8D8D8;
-  padding: 18px 98px;
-  font-family: Space Mono;
-  font-size: 12px;
-  line-height: 18px;
-  cursor: pointer;
-}
-.main-gallery button:hover {
-  background-color: #000000;
-  color: white;
-  font-weight: 700;
 }
 .main-gallery .gallery-content {
   display: grid;
@@ -534,8 +545,8 @@ footer ul a {
   flex: 1;
 }
 .main-single .post-right .post-image img {
-  -o-object-fit: fill;
-     object-fit: fill;
+  -o-object-fit: cover;
+     object-fit: cover;
   max-width: 100%;
   max-height: 100%;
 }
