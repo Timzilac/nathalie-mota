@@ -179,6 +179,7 @@ header ul a:hover {
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 3px;
+  text-transform: capitalize;
 }
 .main-gallery .gallery-filters .filter-container .dropdown-content label:hover, .related-photo .gallery-filters .filter-container .dropdown-content label:hover {
   background-color: #E00000;

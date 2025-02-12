@@ -131,7 +131,7 @@ header {
         .filter-container {
             position: relative;
             display: inline-block;
-            .dropdown-open {
+            .dropdown-open {    
                 border-radius: 8px 8px 0 0;
                 border: 1.3px solid #215AFF;
                 img {
@@ -176,6 +176,7 @@ header {
                     font-size: 12px;
                     line-height: 18px;
                     letter-spacing: 3px;
+                    text-transform: capitalize;
                     &:hover {
                         background-color: #E00000;
                         color: white;
