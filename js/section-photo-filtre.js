@@ -9,74 +9,44 @@ document.addEventListener('DOMContentLoaded', function () {
     const galleryContent = document.querySelector('.gallery-content');
     const photoItems = Array.from(galleryContent.querySelectorAll('.photo-item'));
 
-    // Stocker l'ordre initial des photos pour pouvoir le restaurer
+    // Stocker l'ordre initial des photos
     const initialOrder = photoItems.map(item => item);
 
     // Masquer les options par défaut au chargement de la page
-    hideDefaultOptions();
+    const defaultSortLabel = sortByOptions.querySelector('label input[value="default"]').parentElement;
+    const defaultCategoryLabel = filterCategoryOptions.querySelector('label input[value=""]').parentElement;
+    const defaultFormatLabel = filterFormatOptions.querySelector('label input[value=""]').parentElement;
+    defaultSortLabel.style.display = 'none';
+    defaultCategoryLabel.style.display = 'none';
+    defaultFormatLabel.style.display = 'none';
 
-    // Récupérer les URLs des images de flèche depuis les attributs data-*
-    const sortByArrowImageUrl = sortByButton.getAttribute('data-arrow-image');
-    const filterCategoryArrowImageUrl = filterCategoryButton.getAttribute('data-arrow-image');
-    const filterFormatArrowImageUrl = filterFormatButton.getAttribute('data-arrow-image');
-
-    // Fonction pour créer une image de flèche
-    function createArrowImage(url) {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = 'arrow';
-        img.height = 7;
-        img.width = 12;
-        return img;
-    }
-
-    // Fonction pour masquer les options par défaut
-    function hideDefaultOptions() {
-        const defaultSortLabel = sortByOptions.querySelector('label input[value="default"]').parentElement;
-        const defaultCategoryLabel = filterCategoryOptions.querySelector('label input[value=""]').parentElement;
-        const defaultFormatLabel = filterFormatOptions.querySelector('label input[value=""]').parentElement;
-        defaultSortLabel.style.display = 'none';
-        defaultCategoryLabel.style.display = 'none';
-        defaultFormatLabel.style.display = 'none';
-    }
-
-    // Fonction pour ouvrir/fermer les menus déroulants et gérer le style du bouton
+    // Ouvrir/fermer les menus déroulants
     function toggleDropdown(button, options, otherOptions1, otherOptions2) {
-        button.addEventListener('click', function (event) {
-            event.stopPropagation(); // Empêcher la propagation de l'événement
-            const isOpen = options.style.display === 'block';
-            options.style.display = isOpen ? 'none' : 'block';
-
-            // Ajouter ou supprimer la classe CSS pour le border-radius
-            button.classList.toggle('dropdown-open', !isOpen);
-
+        button.addEventListener('click', function () {
+            // Afficher ou cacher l'option sélectionnée
+            options.style.display = (options.style.display === 'block' ? 'none' : 'block');
+            
             // Fermer les autres menus déroulants
-            if (otherOptions1) {
-                otherOptions1.style.display = 'none';
-                otherOptions1.previousElementSibling.classList.remove('dropdown-open');
-            }
-            if (otherOptions2) {
-                otherOptions2.style.display = 'none';
-                otherOptions2.previousElementSibling.classList.remove('dropdown-open');
-            }
+            if (otherOptions1) otherOptions1.style.display = 'none';
+            if (otherOptions2) otherOptions2.style.display = 'none';
         });
     }
 
-    // Appliquer la fonction toggleDropdown à chaque bouton
     toggleDropdown(sortByButton, sortByOptions, filterCategoryOptions, filterFormatOptions);
     toggleDropdown(filterCategoryButton, filterCategoryOptions, sortByOptions, filterFormatOptions);
     toggleDropdown(filterFormatButton, filterFormatOptions, sortByOptions, filterCategoryOptions);
 
     // Fermer les menus déroulants si on clique en dehors
-    document.addEventListener('click', function () {
-        sortByOptions.style.display = 'none';
-        filterCategoryOptions.style.display = 'none';
-        filterFormatOptions.style.display = 'none';
-
-        // Supprimer la classe CSS pour le border-radius
-        sortByButton.classList.remove('dropdown-open');
-        filterCategoryButton.classList.remove('dropdown-open');
-        filterFormatButton.classList.remove('dropdown-open');
+    document.addEventListener('click', function (event) {
+        if (!sortByButton.contains(event.target) && !sortByOptions.contains(event.target)) {
+            sortByOptions.style.display = 'none';
+        }
+        if (!filterCategoryButton.contains(event.target) && !filterCategoryOptions.contains(event.target)) {
+            filterCategoryOptions.style.display = 'none';
+        }
+        if (!filterFormatButton.contains(event.target) && !filterFormatOptions.contains(event.target)) {
+            filterFormatOptions.style.display = 'none';
+        }
     });
 
     // Fonction pour trier les photos
@@ -101,69 +71,124 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fonction pour filtrer les photos
-    function filterPhotos() {
-        const selectedCategory = document.querySelector('input[name="filter-category"]:checked').value;
-        const selectedFormat = document.querySelector('input[name="filter-format"]:checked').value;
+// Fonction pour mettre la première lettre en majuscule
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
-        photoItems.forEach(item => {
-            const categoryMatch = selectedCategory === '' || item.dataset.category.includes(selectedCategory);
-            const formatMatch = selectedFormat === '' || item.dataset.format.includes(selectedFormat);
+function filterPhotos() {
+    const selectedCategory = document.querySelector('input[name="filter-category"]:checked') ? capitalizeFirstLetter(document.querySelector('input[name="filter-category"]:checked').value) : '';
+    const selectedFormat = document.querySelector('input[name="filter-format"]:checked') ? capitalizeFirstLetter(document.querySelector('input[name="filter-format"]:checked').value) : '';
+    
+    // Debugging
+    console.log('Selected Category:', selectedCategory);
+    console.log('Selected Format:', selectedFormat);
+    
+    photoItems.forEach(item => {
+        // Comparer en utilisant capitalizeFirstLetter pour uniformiser la casse
+        const categoryMatch = selectedCategory === '' || item.dataset.category === selectedCategory;
+        const formatMatch = selectedFormat === '' || item.dataset.format === selectedFormat;
+    
+        // Affichage ou masquage des éléments en fonction du match
+        if (categoryMatch && formatMatch) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
 
-            if (categoryMatch && formatMatch) {
-                item.style.display = 'block'; // Afficher l'élément
-            } else {
-                item.style.display = 'none'; // Masquer l'élément
+    document.querySelectorAll('input[name="sort-by"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const arrowImage = '<img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow" height="7" width="12">';
+            if (this.value === 'default') {
+                sortByButton.innerHTML = 'Trier par ' + arrowImage;
+            } else if (this.value === 'recent-to-old') {
+                sortByButton.innerHTML = 'Date récente - ancienne ' + arrowImage;
+            } else if (this.value === 'old-to-recent') {
+                sortByButton.innerHTML = 'Date ancienne - récente ' + arrowImage;
             }
+    
+            // Masquer l'option sélectionnée dans le menu déroulant
+            const labels = sortByOptions.querySelectorAll('label');
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input.value === this.value) {
+                    label.style.display = 'none';
+                } else {
+                    label.style.display = 'block';
+                }
+            });
+    
+            // Trier les photos
+            sortPhotos(this.value);
+    
+            // Appliquer également les filtres après le tri
+            filterPhotos();
+    
+            // Fermer le menu déroulant après sélection
+            sortByOptions.style.display = 'none';
         });
-    }
-
-    // Appliquer le tri lorsque l'utilisateur sélectionne une option
-    setupRadioButtons('input[name="sort-by"]', sortByButton, sortByArrowImageUrl, sortPhotos);
+    });
+    
 
     // Appliquer le filtre par catégorie
-    setupRadioButtons('input[name="filter-category"]', filterCategoryButton, filterCategoryArrowImageUrl, filterPhotos);
+    document.querySelectorAll('input[name="filter-category"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            // Mettre à jour le texte du bouton avec l'image
+            const arrowImage = '<img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow" height="7" width="12">';
+            if (this.value === '') {
+                filterCategoryButton.innerHTML = 'Catégories ' + arrowImage;
+            } else {
+                filterCategoryButton.innerHTML = `${this.nextSibling.textContent.trim()} ${arrowImage}`;
+            }
+
+            // Masquer l'option sélectionnée dans le menu déroulant
+            const labels = filterCategoryOptions.querySelectorAll('label');
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input.value === this.value) {
+                    label.style.display = 'none'; // Masquer l'option sélectionnée
+                } else {
+                    label.style.display = 'block'; // Afficher les autres options
+                }
+            });
+
+            // Appliquer le filtre
+            filterPhotos();
+
+            // Fermer le menu déroulant après sélection
+            filterCategoryOptions.style.display = 'none';
+        });
+    });
 
     // Appliquer le filtre par format
-    setupRadioButtons('input[name="filter-format"]', filterFormatButton, filterFormatArrowImageUrl, filterPhotos);
+    document.querySelectorAll('input[name="filter-format"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            // Mettre à jour le texte du bouton avec l'image
+            const arrowImage = '<img src="<?php echo get_template_directory_uri();/images/arrow-filter.png" alt="arrow" height="7" width="12">';
+            if (this.value === '') {
+                filterFormatButton.innerHTML = 'Formats ' + arrowImage;
+            } else {
+                filterFormatButton.innerHTML = `${this.nextSibling.textContent.trim()} ${arrowImage}`;
+            }
 
-    // Fonction générique pour configurer les boutons radio
-    function setupRadioButtons(selector, button, arrowImageUrl, callback) {
-        document.querySelectorAll(selector).forEach(radio => {
-            radio.addEventListener('change', function () {
-                // Mettre à jour le texte du bouton avec l'image
-                updateButtonText(button, this.value, this.nextSibling.textContent.trim());
-
-                // Ajouter l'image de la flèche
-                button.appendChild(createArrowImage(arrowImageUrl));
-
-                // Masquer l'option sélectionnée dans le menu déroulant
-                hideSelectedOption(this);
-
-                // Exécuter la fonction de rappel (tri ou filtre)
-                callback(this.value);
-
-                // Fermer le menu déroulant après sélection
-                button.nextElementSibling.style.display = 'none';
-                button.classList.remove('dropdown-open');
+            // Masquer l'option sélectionnée dans le menu déroulant
+            const labels = filterFormatOptions.querySelectorAll('label');
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input.value === this.value) {
+                    label.style.display = 'none'; // Masquer l'option sélectionnée
+                } else {
+                    label.style.display = 'block'; // Afficher les autres options
+                }
             });
-        });
-    }
 
-    // Fonction pour mettre à jour le texte du bouton
-    function updateButtonText(button, value, text) {
-        if (value === '') {
-            button.innerHTML = `${button.id === 'sort-by-button' ? 'Trier par' : button.textContent.split(' ')[0]} `;
-        } else {
-            button.innerHTML = `${text} `;
-        }
-    }
+            // Appliquer le filtre
+            filterPhotos();
 
-    // Fonction pour masquer l'option sélectionnée dans le menu déroulant
-    function hideSelectedOption(selectedRadio) {
-        const labels = selectedRadio.closest('div').querySelectorAll('label');
-        labels.forEach(label => {
-            const input = label.querySelector('input');
-            label.style.display = input.value === selectedRadio.value ? 'none' : 'block';
+            // Fermer le menu déroulant après sélection
+            filterFormatOptions.style.display = 'none';
         });
-    }
+    });
 });
