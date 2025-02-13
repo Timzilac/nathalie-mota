@@ -18,6 +18,7 @@ function my_theme_enqueue_styles()
     wp_enqueue_script('filtre-photo-script', get_theme_file_uri('/js/filtre-photo.js'), array('jquery'));
     wp_enqueue_script('lightbox-script', get_theme_file_uri('/js/lightbox.js'));
     wp_enqueue_script('contact-nav-script', get_theme_file_uri('/js/nav-next-before.js'));
+    wp_enqueue_script('menu-burger-script', get_theme_file_uri('/js/menu-burger.js'));
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 

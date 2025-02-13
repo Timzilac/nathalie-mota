@@ -19,8 +19,8 @@ $photo_limit = isset($photo_limit) ? $photo_limit : 8; // Limite par défaut à 
                     $categories = get_terms(['taxonomy' => 'categorie', 'hide_empty' => true]);
                     foreach ($categories as $category) {
                         echo "<label>
-                                <input type='radio' name='filter-category' value='{$category->slug}'> {$category->name}
-                            </label>";
+                                    <input type='radio' name='filter-category' value='{$category->slug}'> {$category->name}
+                                </label>";
                     }
                     ?>
                 </div>
@@ -39,29 +39,31 @@ $photo_limit = isset($photo_limit) ? $photo_limit : 8; // Limite par défaut à 
                     $formats = get_terms(['taxonomy' => 'format', 'hide_empty' => true]);
                     foreach ($formats as $format) {
                         echo "<label>
-                                <input type='radio' name='filter-format' value='{$format->slug}'> {$format->name}
-                            </label>";
+                                    <input type='radio' name='filter-format' value='{$format->slug}'> {$format->name}
+                                </label>";
                     }
                     ?>
                 </div>
             </div>
         </div>
-        <div class="filter-container">
-            <button id="sort-by-button"
-                data-arrow-image="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png">
-                Trier par <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow"
-                    height="7" width="12">
-            </button>
-            <div id="sort-by-options" class="dropdown-content">
-                <label>
-                    <input type="radio" name="sort-by" value="default" checked> Trier par
-                </label>
-                <label>
-                    <input type="radio" name="sort-by" value="recent-to-old"> Date récente
-                </label>
-                <label>
-                    <input type="radio" name="sort-by" value="old-to-recent"> Date ancienne
-                </label>
+        <div class="filtre-date">
+            <div class="filter-container">
+                <button id="sort-by-button"
+                    data-arrow-image="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png">
+                    Trier par <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-filter.png" alt="arrow"
+                        height="7" width="12">
+                </button>
+                <div id="sort-by-options" class="dropdown-content">
+                    <label>
+                        <input type="radio" name="sort-by" value="default" checked> Trier par
+                    </label>
+                    <label>
+                        <input type="radio" name="sort-by" value="recent-to-old"> Date récente
+                    </label>
+                    <label>
+                        <input type="radio" name="sort-by" value="old-to-recent"> Date ancienne
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -126,6 +128,15 @@ $photo_limit = isset($photo_limit) ? $photo_limit : 8; // Limite par défaut à 
                                 </div>
                                 <div class="eye-icon" onclick="window.location.href='<?php the_permalink(); ?>'">
                                     <img src="<?php echo get_template_directory_uri(); ?>/images/icon-eye.png" alt="Voir">
+                                </div>
+                                <div class="category-title">
+                                    <span class="photo-title"><?php the_title(); ?></span>
+                                    <span class="photo-category">
+                                        <?php
+                                        $categories = wp_get_post_terms(get_the_ID(), 'categorie');
+                                        echo !empty($categories) ? esc_html($categories[0]->name) : 'Sans catégorie';
+                                        ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -27,7 +27,7 @@
                         } ?>
                     </div>
                     <div class="type">Type : <?php echo get_post_meta(get_the_ID(), 'type', true); ?></div>
-                    <div class="post-year">Année de publication : <?php echo get_the_date('Y'); ?></div>
+                    <div class="post-year">Année : <?php echo get_the_date('Y'); ?></div>
                 </div>
                 <hr class="separator">
             </div>
