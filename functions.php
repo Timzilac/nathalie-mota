@@ -30,92 +30,51 @@ function load_more_photos()
 
     $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
     $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
-    $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
-    $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
-    $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'default';
+    $post_not_in = !empty($_POST['post_not_in']) ? array(intval($_POST['post_not_in'])) : array();
 
+    // Ajouter ici l'ID de la photo actuelle pour l'exclure de toutes les sections
+    $current_photo_id = isset($_POST['post_not_in']) ? intval($_POST['post_not_in'][0]) : 0;
+    if ($current_photo_id) {
+        $post_not_in[] = $current_photo_id; // Ajouter la photo actuelle à la liste d'exclusion
+    }
+
+    // Simplification de la requête, sans les filtres supplémentaires
     $args = array(
-        'post_type' => 'photo',
+        'post_type'      => 'photo',
         'posts_per_page' => $limit,
-        'paged' => $paged,
+        'paged'          => $paged,
+        'post__not_in'   => $post_not_in,  // Exclure la photo actuelle
     );
 
-    // Ajouter les filtres de catégorie et de format
-    if (!empty($category) || !empty($format)) {
-        $args['tax_query'] = array('relation' => 'AND');
-
-        if (!empty($category)) {
-            $args['tax_query'][] = array(
-                'taxonomy' => 'categorie',
-                'field' => 'slug',
-                'terms' => $category,
-            );
-        }
-
-        if (!empty($format)) {
-            $args['tax_query'][] = array(
-                'taxonomy' => 'format',
-                'field' => 'slug',
-                'terms' => $format,
-            );
-        }
-    }
-
-    // Ajouter le tri
-    if ($sort === 'recent-to-old') {
-        $args['orderby'] = 'date';
-        $args['order'] = 'DESC';
-    } elseif ($sort === 'old-to-recent') {
-        $args['orderby'] = 'date';
-        $args['order'] = 'ASC';
-    }
+    // Debugging: Afficher les paramètres de la requête
+    error_log("Arguments de la requête simplifiée: " . print_r($args, true));
 
     $query = new WP_Query($args);
 
+    if (!$query->have_posts()) {
+        error_log("Aucune photo trouvée après exclusion.");
+    }
+
+    $output = '';
+
     if ($query->have_posts()) {
-        $output = '';
+        ob_start();
+
         while ($query->have_posts()) {
             $query->the_post();
-            $photo_id = get_the_ID();
-            $photo_title = get_the_title();
-            $photo_permalink = get_permalink();
-            $photo_format = get_the_terms($photo_id, 'format');
-            $photo_format_slug = !empty($photo_format) ? esc_attr($photo_format[0]->slug) : 'sans-format';
-            $photo_category = get_the_terms($photo_id, 'categorie');
-            $photo_category_slug = !empty($photo_category) ? esc_attr($photo_category[0]->slug) : 'sans-categorie';
-            $photo_reference = get_post_meta($photo_id, 'reference', true);
-            $photo_date = get_the_date('Y-m-d');
-            $photo_fullscreen = get_the_post_thumbnail_url($photo_id, 'full');
-
-            $output .= '<div class="photo-item" data-fullscreen="' . esc_url($photo_fullscreen) . '" data-date="' . esc_attr($photo_date) . '" data-format="' . esc_attr($photo_format_slug) . '" data-reference="' . esc_attr($photo_reference) . '" data-category="' . esc_attr($photo_category_slug) . '">';
-            if (has_post_thumbnail()) {
-                $output .= get_the_post_thumbnail($photo_id, 'medium');
-            } else {
-                $output .= '<p>No thumbnail available</p>';
-            }
-            // Overlay
-            $output .= '<div class="photo-overlay">';
-            $output .= '<div class="photo-icons">';
-            $output .= '<div class="fullscreen-icon">';
-            $output .= '<img src="' . get_template_directory_uri() . '/images/fullscreen.png" alt="Fullscreen">';
-            $output .= '</div>';
-            $output .= '<div class="eye-icon" onclick="window.location.href=\'' . $photo_permalink . '\'">';
-            $output .= '<img src="' . get_template_directory_uri() . '/images/icon-eye.png" alt="Voir">';
-            $output .= '</div>';
-            $output .= '<div class="category-title">';
-            $output .= '<span class="photo-title">' . esc_html($photo_title) . '</span>';
-            $output .= '<span class="photo-category">' . (!empty($photo_category) ? esc_html($photo_category[0]->name) : 'Sans catégorie') . '</span>';
-            $output .= '</div>';
-            $output .= '</div>';
-            $output .= '</div>';
-            $output .= '</div>';
+            get_template_part('template-parts/display-photo');
         }
-        echo $output;
+
+        $output = ob_get_clean();
     }
 
     wp_reset_postdata();
+
+    echo $output;
     wp_die();
 }
+
+
 add_action('wp_ajax_load_more_photos', 'load_more_photos');
 add_action('wp_ajax_nopriv_load_more_photos', 'load_more_photos');
 ?>

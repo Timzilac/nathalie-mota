@@ -587,7 +587,7 @@ footer ul a:hover {
   }
 }
 .main-single {
-  padding: 30px 140px;
+  padding: 30px 140px 0 140px;
   height: 100vh;
   display: flex;
   flex-direction: column;
