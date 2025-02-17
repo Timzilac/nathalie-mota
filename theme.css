@@ -543,6 +543,21 @@ header .main-nav ul li a:hover {
   color: white;
 }
 
+@media screen and (max-width: 800px) {
+  .lightbox .lightbox-content img {
+    max-height: 70vh;
+    max-width: 100%;
+  }
+  .lightbox .lightbox-content #prev-photo {
+    top: 90%;
+  }
+  .lightbox .lightbox-content #next-photo {
+    top: 90%;
+  }
+  .lightbox .lightbox-content .lightbox-info {
+    padding-inline: 10px;
+  }
+}
 footer {
   border-top: 1px solid black;
   display: flex;

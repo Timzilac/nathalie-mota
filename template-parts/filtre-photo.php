@@ -14,8 +14,8 @@
                 $categories = get_terms(['taxonomy' => 'categorie', 'hide_empty' => true]);
                 foreach ($categories as $category) {
                     echo "<label>
-                                    <input type='radio' name='filter-category' value='{$category->slug}'> {$category->name}
-                                </label>";
+                        <input type='radio' name='filter-category' value='{$category->slug}'> {$category->name}
+                    </label>";
                 }
                 ?>
             </div>
@@ -34,8 +34,8 @@
                 $formats = get_terms(['taxonomy' => 'format', 'hide_empty' => true]);
                 foreach ($formats as $format) {
                     echo "<label>
-                                    <input type='radio' name='filter-format' value='{$format->slug}'> {$format->name}
-                                </label>";
+                        <input type='radio' name='filter-format' value='{$format->slug}'> {$format->name}
+                    </label>";
                 }
                 ?>
             </div>

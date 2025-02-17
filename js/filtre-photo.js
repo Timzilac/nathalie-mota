@@ -1,15 +1,15 @@
 jQuery(document).ready(function ($) {
     var loading = false;
-    var limit = $('#photo-gallery').data('limit') || 8; // Récupérer la limite via data-limit (par défaut 8)
+    var limit = $('#photo-gallery').data('limit') || 8;
     var single = $('#photo-gallery').data('single'); // ID de la photo actuelle
-    var category = $('#photo-gallery').data('category');
+    var defaultCategory = $('#photo-gallery').data('category') || "";
     var format = "";
     var sort = "default";
 
-    // Masquer l'option par défaut ("Formats") au démarrage
+    // Masquer les options par défaut
     $('#filter-format-options input[type="radio"][value=""]').closest('label').hide();
     $('#filter-category-options input[type="radio"][value=""]').closest('label').hide();
-    $('#sort-by-options input[type="radio"][value="default"]').closest('label').hide(); // Masquer l'option "Trier par"
+    $('#sort-by-options input[type="radio"][value="default"]').closest('label').hide();
 
     // Fonction pour fermer tous les menus déroulants
     function closeAllDropdowns() {
@@ -17,12 +17,24 @@ jQuery(document).ready(function ($) {
         $('.filter-container button').removeClass('dropdown-open');
     }
 
-    // Fonction pour charger les photos avec les filtres
-    function load_photos(paged = 1, category = '', format = '', sort = 'default') {
-        if (loading) return;
+    // Fonction helper : récupérer la valeur du filtre ou renvoyer la valeur par défaut si absente ou vide
+    function getFilterValue(selector, defaultVal) {
+        var value = $(selector + ' input[type="radio"]:checked').val();
+        if (typeof value === "undefined" || value === null || value.trim() === "") {
+            return defaultVal;
+        }
+        return value;
+    }
 
+    // Fonction pour charger les photos avec les filtres
+    function load_photos(paged, category, format, sort) {
+        paged = paged || 1;
+        // Forcer la valeur par défaut si la catégorie est vide
+        if (!category || category.trim() === "") {
+            category = defaultCategory;
+        }
+        if (loading) return;
         loading = true;
-        console.log("Photo actuelle exclue (post_not_in) :", single);
 
         $.ajax({
             url: load_more_params.ajax_url,
@@ -38,10 +50,8 @@ jQuery(document).ready(function ($) {
                 sort: sort
             },
             success: function (response) {
-                console.log("Réponse AJAX reçue :", response);
-
                 if (!response) {
-                    console.log("Aucune photo reçue. Vérifiez la requête PHP.");
+                    $('#photo-container');
                 } else {
                     if (paged === 1) {
                         $('#photo-container').html(response);
@@ -51,31 +61,32 @@ jQuery(document).ready(function ($) {
 
                     var photoCount = $('#photo-container .photo-item').length;
                     if (photoCount < limit * paged) {
-                        $('#load-more-btn').hide(); // Cacher le bouton si pas de photos restantes
+                        $('#load-more-btn').hide(); // Cacher le bouton s'il n'y a pas assez de photos
                     } else {
-                        $('#load-more-btn').show(); // Afficher le bouton "Load more"
+                        $('#load-more-btn').show();
                     }
-
-                    loading = false;
                 }
+                loading = false;
             }
         });
     }
 
-    // Clic sur le bouton de format pour afficher le menu déroulant
-    $('#filter-format-button').on('click', function (e) {
-        e.stopPropagation();
-        var dropdown = $(this).next('.dropdown-content');
-        if (dropdown.is(':visible')) {
-            closeAllDropdowns();
-        } else {
-            closeAllDropdowns();
-            dropdown.toggle();
-            $(this).addClass('dropdown-open');
-        }
-    });
+    // Fonction pour mettre à jour les photos en fonction des filtres actuels
+    function updatePhotos() {
+        var cat = getFilterValue('#filter-category-options', defaultCategory);
+        var fmt = getFilterValue('#filter-format-options', "");
+        var srt = getFilterValue('#sort-by-options', "default");
 
-    // Mettre à jour le bouton et recharger les photos après sélection d'un format
+        if (srt === "recent-to-old") {
+            srt = "date_desc";
+        } else if (srt === "old-to-recent") {
+            srt = "date_asc";
+        }
+
+        load_photos(1, cat, fmt, srt);
+    }
+
+    // Gestion des événements sur le filtre Format
     $('#filter-format-options input[type="radio"]').on('change', function () {
         var dropdown = $(this).closest('.dropdown-content');
         var button = dropdown.prev('button');
@@ -87,26 +98,10 @@ jQuery(document).ready(function ($) {
         button.html(selectedText + ' <img src="' + button.data('arrow-image') + '" alt="arrow" height="7" width="12">');
         closeAllDropdowns();
 
-        var format = $('#filter-format-options input[type="radio"]:checked').val();
-        var category = $('#filter-category-options input[type="radio"]:checked').val();
-        var sort = $('#sort-by-options input[type="radio"]:checked').val();
-
-        load_photos(1, category, format, sort);
+        updatePhotos();
     });
 
-    // Gérer la sélection du filtre de catégorie
-    $('#filter-category-button').on('click', function (e) {
-        e.stopPropagation();
-        var dropdown = $(this).next('.dropdown-content');
-        if (dropdown.is(':visible')) {
-            closeAllDropdowns();
-        } else {
-            closeAllDropdowns();
-            dropdown.toggle();
-            $(this).addClass('dropdown-open');
-        }
-    });
-
+    // Gestion des événements sur le filtre Catégorie
     $('#filter-category-options input[type="radio"]').on('change', function () {
         var dropdown = $(this).closest('.dropdown-content');
         var button = dropdown.prev('button');
@@ -118,26 +113,10 @@ jQuery(document).ready(function ($) {
         button.html(selectedText + ' <img src="' + button.data('arrow-image') + '" alt="arrow" height="7" width="12">');
         closeAllDropdowns();
 
-        var category = $('#filter-category-options input[type="radio"]:checked').val();
-        var format = $('#filter-format-options input[type="radio"]:checked').val();
-        var sort = $('#sort-by-options input[type="radio"]:checked').val();
-
-        load_photos(1, category, format, sort);
+        updatePhotos();
     });
 
-    // Clic sur le bouton de tri pour afficher le menu
-    $('#sort-by-button').on('click', function (e) {
-        e.stopPropagation();
-        var dropdown = $(this).next('.dropdown-content');
-        if (dropdown.is(':visible')) {
-            closeAllDropdowns();
-        } else {
-            closeAllDropdowns();
-            dropdown.toggle();
-            $(this).addClass('dropdown-open');
-        }
-    });
-
+    // Gestion des événements sur le filtre Tri
     $('#sort-by-options input[type="radio"]').on('change', function () {
         var dropdown = $(this).closest('.dropdown-content');
         var button = dropdown.prev('button');
@@ -149,13 +128,30 @@ jQuery(document).ready(function ($) {
         button.html(selectedText + ' <img src="' + button.data('arrow-image') + '" alt="arrow" height="7" width="12">');
         closeAllDropdowns();
 
-        var sort = $('#sort-by-options input[type="radio"]:checked').val();
-        var category = $('#filter-category-options input[type="radio"]:checked').val();
-        var format = $('#filter-format-options input[type="radio"]:checked').val();
-
-        load_photos(1, category, format, sort);
+        updatePhotos();
     });
 
-    // Charger les photos lors de l'initialisation
-    load_photos(1, category, format, sort);
+    // Clic sur les boutons pour afficher les menus déroulants
+    $('#filter-format-button, #filter-category-button, #sort-by-button').on('click', function (e) {
+        e.stopPropagation();
+        var dropdown = $(this).next('.dropdown-content');
+        if (dropdown.is(':visible')) {
+            closeAllDropdowns();
+        } else {
+            closeAllDropdowns();
+            dropdown.toggle();
+            $(this).addClass('dropdown-open');
+        }
+    });
+
+    // Forcer la sélection par défaut pour le filtre Catégorie si aucun bouton n'est coché
+    var $defaultRadio = $('#filter-category-options input[type="radio"][value="' + defaultCategory + '"]');
+    if ($defaultRadio.length && !$defaultRadio.is(':checked')) {
+        $defaultRadio.prop('checked', true);
+    }
+
+    // Lancer le chargement initial des photos avec un léger délai pour s'assurer que le DOM est prêt
+    setTimeout(function () {
+        load_photos(1, defaultCategory, "", "default");
+    }, 100);
 });

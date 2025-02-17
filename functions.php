@@ -14,7 +14,7 @@ function my_theme_enqueue_styles()
 {
     wp_enqueue_style('my_theme_style', get_stylesheet_uri());
     wp_enqueue_style('my-theme-extra-style', get_theme_file_uri('/theme.css'));
-    wp_enqueue_script('my-theme-extra-script', get_theme_file_uri('/js/modal.js'));
+    wp_enqueue_script('modal-script', get_theme_file_uri('/js/modal.js'));
     wp_enqueue_script('filtre-photo-script', get_theme_file_uri('/js/filtre-photo.js'), array('jquery'));
     wp_enqueue_script('lightbox-script', get_theme_file_uri('/js/lightbox.js'));
     wp_enqueue_script('contact-nav-script', get_theme_file_uri('/js/nav-next-before.js'));
@@ -30,30 +30,52 @@ function load_more_photos()
 
     $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
     $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
-    $post_not_in = !empty($_POST['post_not_in']) ? array(intval($_POST['post_not_in'])) : array();
+    $post_not_in = !empty($_POST['post_not_in']) ? array_map('intval', (array) $_POST['post_not_in']) : array();
 
-    // Ajouter ici l'ID de la photo actuelle pour l'exclure de toutes les sections
-    $current_photo_id = isset($_POST['post_not_in']) ? intval($_POST['post_not_in'][0]) : 0;
-    if ($current_photo_id) {
-        $post_not_in[] = $current_photo_id; // Ajouter la photo actuelle à la liste d'exclusion
-    }
+    $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
+    $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
+    $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'default';
 
-    // Simplification de la requête, sans les filtres supplémentaires
     $args = array(
-        'post_type'      => 'photo',
+        'post_type' => 'photo',
         'posts_per_page' => $limit,
-        'paged'          => $paged,
-        'post__not_in'   => $post_not_in,  // Exclure la photo actuelle
+        'paged' => $paged,
+        'post__not_in' => $post_not_in,
     );
 
-    // Debugging: Afficher les paramètres de la requête
-    error_log("Arguments de la requête simplifiée: " . print_r($args, true));
+    // Gestion des filtres avec 'AND' pour éviter les conflits
+    $tax_query = array('relation' => 'AND');
+
+    if (!empty($category)) {
+        $tax_query[] = array(
+            'taxonomy' => 'categorie',
+            'field' => 'slug',
+            'terms' => $category,
+        );
+    }
+
+    if (!empty($format)) {
+        $tax_query[] = array(
+            'taxonomy' => 'format',
+            'field' => 'slug',
+            'terms' => $format,
+        );
+    }
+
+    if (count($tax_query) > 1) {
+        $args['tax_query'] = $tax_query;
+    }
+
+    // Trier les résultats par date
+    if ($sort === 'date_desc') {
+        $args['orderby'] = 'date';
+        $args['order'] = 'DESC';
+    } elseif ($sort === 'date_asc') {
+        $args['orderby'] = 'date';
+        $args['order'] = 'ASC';
+    }
 
     $query = new WP_Query($args);
-
-    if (!$query->have_posts()) {
-        error_log("Aucune photo trouvée après exclusion.");
-    }
 
     $output = '';
 
@@ -66,6 +88,9 @@ function load_more_photos()
         }
 
         $output = ob_get_clean();
+    } else {
+        // Si aucun post n'est trouvé, on affiche un message de "aucun résultat"
+        $output = '<p>Aucune photo à afficher.</p>';
     }
 
     wp_reset_postdata();
@@ -73,7 +98,6 @@ function load_more_photos()
     echo $output;
     wp_die();
 }
-
 
 add_action('wp_ajax_load_more_photos', 'load_more_photos');
 add_action('wp_ajax_nopriv_load_more_photos', 'load_more_photos');

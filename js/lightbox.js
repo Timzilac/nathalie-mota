@@ -31,14 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
         lightboxImg.src = photoItem.dataset.fullscreen;
         lightboxReference.textContent = photoItem.dataset.reference;
         lightboxCategory.textContent = photoItem.dataset.category;
+    
         currentIndex = index;
-  
+    
         // Affiche ou masque les boutons en fonction de la position
         prevBtn.style.display = currentIndex === 0 ? "none" : "flex";
         nextBtn.style.display = currentIndex === photos.length - 1 ? "none" : "flex";
       }
     }
-  
+    
     // Navigation dans la lightbox
     prevBtn.addEventListener("click", function (event) {
       // Empêche la propagation pour éviter de fermer la lightbox en cliquant sur le bouton

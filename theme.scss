@@ -569,6 +569,27 @@ header {
     }
 }
 
+// Responsive - Lightbox
+@media screen and (max-width: 800px) {
+    .lightbox {
+        .lightbox-content {
+            img {
+                max-height: 70vh;
+                max-width: 100%;
+            }
+            #prev-photo {
+                top: 90%;
+            }
+            #next-photo {
+                top: 90%;
+            }
+            .lightbox-info {
+                padding-inline: 10px;
+            }
+        }
+    }
+}
+
 footer {
     border-top: 1px solid black;
     display: flex;
