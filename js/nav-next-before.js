@@ -11,9 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
             clearTimeout(hoverTimeout);
             const thumbnailUrl = this.getAttribute("data-thumbnail");
 
-            // Log the link target (href)
-            console.log('Link URL:', this.href); // Affiche le lien cible
-
             if (thumbnailUrl) {
                 preview.innerHTML = `<img src="${thumbnailUrl}" alt="Preview">`;
                 preview.style.visibility = "visible";

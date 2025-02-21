@@ -1,11 +1,16 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     var paged = 1; // Initialiser la pagination à 1
     var loading = false;
     var limit = $('#photo-gallery').data('limit') || 8; // Récupérer la limite via data-limit (par défaut 8)
     var loadedPhotos = []; // Stocker les photos chargées
+    var single = $('#photo-gallery').data('single'); // ID de la photo actuelle
+    var defaultCategory = $('#photo-gallery').data('category') || "";
+    var format = "";
+    var sort = "default";
+    var category = defaultCategory;
 
     // Fonction pour charger les photos
-    function load_photos() {
+    window.load_photos = function (paged, category, format, sort) {
         if (loading) return;
 
         loading = true;
@@ -17,38 +22,37 @@ jQuery(document).ready(function($) {
                 action: 'load_more_photos',
                 paged: paged,
                 nonce: load_more_params.nonce,
-                limit: limit
+                post_not_in: [single], // Exclure la photo actuelle
+                limit: limit,
+                category: category,
+                format: format,
+                sort: sort
             },
-            success: function(response) {
+            success: function (response) {
+                var response_data = response.data.data;
                 if (paged === 1) {
                     // Si c'est la première page, remplacer le contenu
-                    jQuery('#photo-container').html(response);
-                    loadedPhotos = [response]; // Stocker la première page de photos
+                    jQuery('#photo-container').html(response_data);
+                    loadedPhotos = [response_data]; // Stocker la première page de photos
                 } else {
                     // Sinon, ajouter le contenu à la fin
-                    jQuery('#photo-container').append(response);
-                    loadedPhotos.push(response); // Ajouter les nouvelles photos à la liste
+                    jQuery('#photo-container').append(response_data);
+                    loadedPhotos.push(response_data); // Ajouter les nouvelles photos à la liste
                 }
 
                 // Vérifier le nombre de photos retournées
-                var photoCount = jQuery('#photo-container .photo-item').length;
+                var photoCount = response.data.count;
 
-                // Mettre à jour le texte du bouton en fonction de l'état
-                if (photoCount < limit * paged) {
+                if (photoCount <= limit * paged) {
                     // S'il n'y a plus de photos à charger, masquer le bouton
                     jQuery('#load-more-btn').hide();
                 } else {
-                    // Sinon, afficher "Charger plus" ou "Charger moins" en fonction de l'état
-                    if (paged === 1) {
-                        jQuery('#load-more-btn').text('Charger plus').show();
-                    } else {
-                        jQuery('#load-more-btn').text('Charger moins').show();
-                    }
+                    // Sinon, afficher "Charger plus"
+                    jQuery('#load-more-btn').text('Charger plus').show();
                 }
-
                 loading = false;
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error(error);
                 loading = false;
             }
@@ -69,13 +73,11 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // Gestion du clic sur le bouton "Charger plus" ou "Charger moins"
-    jQuery('#load-more-btn').on('click', function() {
+    // Gestion du clic sur le bouton "Charger plus"
+    jQuery('#load-more-btn').on('click', function () {
         if ($(this).text() === 'Charger plus') {
             paged++; // Incrémenter la pagination
-            load_photos(); // Charger les photos supplémentaires
-        } else {
-            unload_photos(); // Retirer les photos récemment ajoutées
+            load_photos(paged, category, format, sort); // Charger les photos supplémentaires
         }
     });
 
