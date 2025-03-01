@@ -26,51 +26,6 @@ jQuery(document).ready(function ($) {
         return value;
     }
 
-    // Fonction pour charger les photos avec les filtres
-    // function load_photos(paged, category, format, sort) {
-    //     paged = paged || 1;
-    //     // Forcer la valeur par défaut si la catégorie est vide
-    //     if (!category || category.trim() === "") {
-    //         category = defaultCategory;
-    //     }
-    //     if (loading) return;
-    //     loading = true;
-
-    //     $.ajax({
-    //         url: load_more_params.ajax_url,
-    //         type: 'POST',
-    //         data: {
-    //             action: 'load_more_photos',
-    //             paged: paged,
-    //             post_not_in: [single], // Exclure la photo actuelle
-    //             nonce: load_more_params.nonce,
-    //             limit: limit,
-    //             category: category,
-    //             format: format,
-    //             sort: sort
-    //         },
-    //         success: function (response) {
-    //             if (!response) {
-    //                 jQuery('#photo-container');
-    //             } else {
-    //                 if (paged === 1) {
-    //                     jQuery('#photo-container').html(response);
-    //                 } else {
-    //                     jQuery('#photo-container').append(response);
-    //                 }
-
-    //                 var photoCount = jQuery('#photo-container .photo-item').length;
-    //                 if (photoCount < limit * paged) {
-    //                     jQuery('#load-more-btn').hide(); // Cacher le bouton s'il n'y a pas assez de photos
-    //                 } else {
-    //                     jQuery('#load-more-btn').show();
-    //                 }
-    //             }
-    //             loading = false;
-    //         }
-    //     });
-    // }
-
     // Fonction pour mettre à jour les photos en fonction des filtres actuels
     function updatePhotos() {
         var cat = getFilterValue('#filter-category-options', defaultCategory);
