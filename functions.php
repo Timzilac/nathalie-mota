@@ -33,7 +33,6 @@ function load_more_photos()
     $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
     $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
     $post_not_in = !empty($_POST['post_not_in']) ? array_map('intval', (array) $_POST['post_not_in']) : array();
-
     $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
     $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
     $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'default';
