@@ -123,7 +123,8 @@ header {
         .image-banner {
         position: relative;
         width: 100%;
-        height: auto;
+        height: 962px;
+        object-fit: cover;
         }
         .titre-banner {
         position: absolute;
@@ -143,6 +144,9 @@ header {
         .titre-banner {
             font-size: 28px;
             line-height: 41px;
+        }
+        .image-banner {
+            height: 300px;
         }
     }
 }

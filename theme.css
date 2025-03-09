@@ -113,7 +113,9 @@ header .main-nav ul li a:hover {
 .banner .image-banner {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 962px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .banner .titre-banner {
   position: absolute;
@@ -130,6 +132,9 @@ header .main-nav ul li a:hover {
   .banner .titre-banner {
     font-size: 28px;
     line-height: 41px;
+  }
+  .banner .image-banner {
+    height: 300px;
   }
 }
 .modal {
