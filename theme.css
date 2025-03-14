@@ -71,12 +71,18 @@ header .main-nav ul li a:hover {
 .banner .image-banner {
   position: relative;
   width: 100%;
+<<<<<<< HEAD
   height: 400px;
   opacity: 65%;
 }
 .banner .title-sub-banner {
   position: absolute;
   text-align: center;
+=======
+  height: 962px;
+  -o-object-fit: cover;
+     object-fit: cover;
+>>>>>>> d6f371fa4091af7ebb75545eb4a39bb22dd6764d
 }
 .banner .titre-banner {
   font-family: "Karla", sans-serif;
@@ -110,6 +116,9 @@ header .main-nav ul li a:hover {
   .banner .sub-banner {
     font-size: 30px;
     line-height: 41px;
+  }
+  .banner .image-banner {
+    height: 300px;
   }
 }
 .a-propos {

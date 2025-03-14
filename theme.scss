@@ -72,12 +72,17 @@ header {
         .image-banner {
         position: relative;
         width: 100%;
+<<<<<<< HEAD
         height: 400px;
         opacity: 65%;
         }
         .title-sub-banner {
         position: absolute;
         text-align: center;
+=======
+        height: 962px;
+        object-fit: cover;
+>>>>>>> d6f371fa4091af7ebb75545eb4a39bb22dd6764d
         }
         .titre-banner {
         font-family: "Karla", sans-serif;
@@ -114,6 +119,9 @@ header {
         .sub-banner {
             font-size: 30px;
             line-height: 41px;
+        }
+        .image-banner {
+            height: 300px;
         }
     }
 }
