@@ -2,7 +2,8 @@
     <div class="lightbox-content">
         <img id="lightbox-img" src="" alt="Fullscreen">
         <div class="lightbox-info">
-            <h3 id="lightbox-title"></h3>
+            <div id="lightbox-reference"></div>
+            <div id="lightbox-category"></div>
         </div>
         <button id="prev-photo"><span>&larr;</span> Précédent</button>
         <button id="next-photo">Suivant <span>&rarr;</span></button>
