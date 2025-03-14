@@ -93,7 +93,6 @@ header {
             width: 100%;
             height: -webkit-fill-available;
             display: none;
-            background-color: #E00000;
             ul {
                 flex-direction: column;
                 gap: 50px;
@@ -125,6 +124,10 @@ header {
         width: 100%;
         height: 962px;
         object-fit: cover;
+        }
+        .title-sub-banner {
+        position: absolute;
+        text-align: center;
         }
         .titre-banner {
         position: absolute;

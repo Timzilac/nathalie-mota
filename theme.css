@@ -86,7 +86,6 @@ header .main-nav ul li a:hover {
     width: 100%;
     height: -webkit-fill-available;
     display: none;
-    background-color: #E00000;
   }
   header .main-nav ul {
     flex-direction: column;
@@ -114,8 +113,11 @@ header .main-nav ul li a:hover {
   position: relative;
   width: 100%;
   height: 962px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
+}
+.banner .title-sub-banner {
+  position: absolute;
+  text-align: center;
 }
 .banner .titre-banner {
   position: absolute;

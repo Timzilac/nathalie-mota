@@ -1,4 +1,6 @@
 <?php
+$image = get_page_by_title('banner-image', OBJECT, 'attachment'); // Recherche par titre
+$image_medium = $image ? wp_get_attachment_image_src($image->ID, 'high') : false;
 
 $args = array(
     'post_type' => 'photo',
@@ -23,4 +25,3 @@ if (!empty($photo_posts)) {
         <?php
     }
 }
-?>
